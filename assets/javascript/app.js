@@ -1,64 +1,83 @@
 // Objects with questions and answers
 
 var triviaQuestions = {
-	whiskers {
+	whiskers: {
 		question: "A cat has how many whiskers, on average?",
-		answerA: "12",
+		answerA: "24",
 		answerB: "16",
 		answerC: "8",
-		answerD: "24"
+		answerD: "12",
+		correctAnswer: "answerA"
 	},
-	group {
+	group: {
 		question: "A term for a group of cats is:",
 		answerA: "Clutch",
 		answerB: "Caggle",
 		answerC: "Covey",
-		answerD: "Clowder"
+		answerD: "Clowder",
+		correctAnswer: "answerD"
 	},
-	breeds {
+	breeds: {
 		question: "All of the following are the names of cat breeds, except:",
 		answerA: "Balinese",
 		answerB: "Birman",
 		answerC: "Beauceron",
-		answerD: "Burmilla"
+		answerD: "Burmilla",
+		correctAnswer: "answerC"
 	},
-	taste {
+	taste: {
 		question: "Cats can't taste this:",
-		answerA: "Sour",
+		answerA: "Sweet",
 		answerB: "Bitter",
 		answerC: "Salt",
-		answerD: "Sweet"
-	}
-	calico {
+		answerD: "Sour",
+		correctAnswer: "answerA"
+	},
+	calico: {
 		question: "Calico cats are almost always:",
 		answerA: "Left pawed",
 		answerB: "Female",
 		answerC: "Friendly",
-		answerD: "Finicky"
-	}
-	hemingway {
+		answerD: "Finicky",
+		correctAnswer: "answerB"
+	},
+	hemingway: {
 		question: "Hemingway cats are felines that have:",
 		answerA: "Written a best-selling book",
 		answerB: "An abnormally large head",
 		answerC: "A cropped tail",
-		answerD: "Extra toes"
+		answerD: "Extra toes",
+		correctAnswer: "answerD"
 	}
+};
+
+// Variables that will be needed later for scorekeeping
+
+var correctAnswer = 0;
+var wrongAnswer = 0;
+var timedOut = 0;
+
+// Display question with answers
+
+$(document).ready(function() {
+	displayQuestion(triviaQuestions.whiskers);
+})
+
+function displayQuestion (questionName) {
+
+	$("#trivia-question").text(questionName.question);
+	$("#answer-1").text(questionName.answerA);
+	$("#answer-2").text(questionName.answerB);
+	$("#answer-3").text(questionName.answerC);
+	$("#answer-4").text(questionName.answerD);
 }
-
-// Loop that will run through each question
-
-// Display first question with answers
 
 // Set timer and display it
 
 // Create logic for right and wrong answers, ran out of time
 
-// Displays "you're correct" page
+// Display "you're correct" page
 
-// Displays "wrong!" page
+// Display "wrong!" page
 
-// Displays "out of time" page 
-
-// Display next question
-
-// Restart timer
+// Display "out of time" page 
