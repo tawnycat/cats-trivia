@@ -7,7 +7,7 @@ var triviaQuestions = {
 		answerB: "16",
 		answerC: "8",
 		answerD: "12",
-		correctAnswer: "answerA"
+		correctAnswer: "24"
 	},
 	group: {
 		question: "A term for a group of cats is:",
@@ -15,7 +15,7 @@ var triviaQuestions = {
 		answerB: "Caggle",
 		answerC: "Covey",
 		answerD: "Clowder",
-		correctAnswer: "answerD"
+		correctAnswer: "Clowder"
 	},
 	breeds: {
 		question: "All of the following are the names of cat breeds, except:",
@@ -23,7 +23,7 @@ var triviaQuestions = {
 		answerB: "Birman",
 		answerC: "Beauceron",
 		answerD: "Burmilla",
-		correctAnswer: "answerC"
+		correctAnswer: "Beauceron"
 	},
 	taste: {
 		question: "Cats can't taste this:",
@@ -31,7 +31,7 @@ var triviaQuestions = {
 		answerB: "Bitter",
 		answerC: "Salt",
 		answerD: "Sour",
-		correctAnswer: "answerA"
+		correctAnswer: "Sweet"
 	},
 	calico: {
 		question: "Calico cats are almost always:",
@@ -39,7 +39,7 @@ var triviaQuestions = {
 		answerB: "Female",
 		answerC: "Friendly",
 		answerD: "Finicky",
-		correctAnswer: "answerB"
+		correctAnswer: "Female"
 	},
 	hemingway: {
 		question: "Hemingway cats are felines that have:",
@@ -47,34 +47,57 @@ var triviaQuestions = {
 		answerB: "An abnormally large head",
 		answerC: "A cropped tail",
 		answerD: "Extra toes",
-		correctAnswer: "answerD"
+		correctAnswer: "Extra toes"
 	}
 };
 
-// Variables that will be needed later for scorekeeping
+// Variables that will be needed later
 
-var correctAnswer = 0;
+var rightAnswer = 0;
 var wrongAnswer = 0;
 var timedOut = 0;
+var timeRemaining;
+var questionName;
 
 // Display question with answers
 
 $(document).ready(function() {
 	displayQuestion(triviaQuestions.whiskers);
+	$(".answer-choice").click(isWinner);
 })
 
-function displayQuestion (questionName) {
+function displayQuestion (name) {
 
-	$("#trivia-question").text(questionName.question);
-	$("#answer-1").text(questionName.answerA);
-	$("#answer-2").text(questionName.answerB);
-	$("#answer-3").text(questionName.answerC);
-	$("#answer-4").text(questionName.answerD);
+	$("#trivia-question").text(name.question);
+	$("#answer-1").text(name.answerA);
+	$("#answer-2").text(name.answerB);
+	$("#answer-3").text(name.answerC);
+	$("#answer-4").text(name.answerD);
+
+	questionName = name;
 }
 
 // Set timer and display it
 
 // Create logic for right and wrong answers, ran out of time
+
+function isWinner () {
+	if (this.text === questionName.correctAnswer) {
+		rightAnswer++;
+		$("#trivia-question").text("CORRECT!");
+		$("#answer-1").text("CORRECT ANSWERS: " + rightAnswer);
+		$("#answer-2").text("WRONG ANSWERS: " + wrongAnswer);
+		$("#answer-3").text("OUT OF TIME: " + timedOut);
+		$("#answer-4").empty();
+	} else {
+		wrongAnswer++;
+		$("#trivia-question").text("WRONG!");
+		$("#answer-1").text("CORRECT ANSWER: " + questionName.correctAnswer);
+		$("#answer-2").text("CORRECT ANSWERS: " + rightAnswer);
+		$("#answer-3").text("WRONG ANSWERS: " + wrongAnswer);
+		$("#answer-4").text("OUT OF TIME: " + timedOut);
+	}
+}
 
 // Display "you're correct" page
 
