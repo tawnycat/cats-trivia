@@ -82,6 +82,10 @@ function displayQuestion (name) {
 // Create logic for right and wrong answers, ran out of time
 
 function isWinner () {
+
+	// Display "you're correct" page
+
+	$(".answer-choice").off("click");
 	if (this.text === questionName.correctAnswer) {
 		rightAnswer++;
 		$("#trivia-question").text("CORRECT!");
@@ -90,6 +94,9 @@ function isWinner () {
 		$("#answer-3").text("OUT OF TIME: " + timedOut);
 		$("#answer-4").empty();
 	} else {
+
+		// Display "wrong!" page
+		
 		wrongAnswer++;
 		$("#trivia-question").text("WRONG!");
 		$("#answer-1").text("CORRECT ANSWER: " + questionName.correctAnswer);
@@ -99,8 +106,8 @@ function isWinner () {
 	}
 }
 
-// Display "you're correct" page
 
-// Display "wrong!" page
+
+
 
 // Display "out of time" page 
