@@ -95,7 +95,7 @@ function isWinner () {
 	$(".answer-choice").off("click");
 
 
-	if (this.text === questionObject.correctAnswer) {
+	if ($(this).text() === questionObject.correctAnswer) {
 		rightAnswer++;
 		$("#trivia-question").text("CORRECT!");
 		$("#answer-1").text("CORRECT ANSWERS: " + rightAnswer);
@@ -147,7 +147,7 @@ function nextQuestion () {
 			$(".answer-choice").empty();
 
 		} else {
-			
+
 			displayQuestion(triviaQuestions[question]);
 			clearInterval(postQuestionInterval);
 
