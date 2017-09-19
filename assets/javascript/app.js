@@ -60,13 +60,28 @@ var questionObject;
 var question = 0;
 var questionInterval;
 var postQuestionInterval;
+var time = 15;
+var displayTimer;
 
 // Display question with answers
 
 $(document).ready(function() {
 	
 	displayQuestion(triviaQuestions[question]);
+
+	// Set timer and display it
+
+	displayTimer = setInterval(decrement, 1000);
+
 })
+
+function decrement() {
+
+	time--;
+
+	$("#time-left").text(time + " seconds remaining");
+
+}
 
 function displayQuestion (object) {
 
@@ -75,24 +90,25 @@ function displayQuestion (object) {
 	$("#answer-2").text(object.answerB);
 	$("#answer-3").text(object.answerC);
 	$("#answer-4").text(object.answerD);
+	$("#time-left").text(time + " seconds remaining")
 
 	questionObject = object;
 
-	questionInterval = setInterval(timeOut, 10000);
+	questionInterval = setInterval(timeOut, 15000);
 
 	$(".answer-choice").click(isWinner);
+
+
 }
-
-// Set timer and display it
-
-// Create logic for right and wrong answers, ran out of time
 
 function isWinner () {
 
 	// Display "you're correct" page
 
 	clearInterval(questionInterval);
+	clearInterval(displayTimer);
 	$(".answer-choice").off("click");
+	$("#time-left").empty();
 
 
 	if ($(this).text() === questionObject.correctAnswer) {
@@ -114,7 +130,7 @@ function isWinner () {
 		$("#answer-4").text("OUT OF TIME: " + timedOut);
 	}
 
-	postQuestionInterval = setInterval(nextQuestion, 5000);
+	postQuestionInterval = setInterval(nextQuestion, 10000);
 
 }
 
@@ -123,13 +139,15 @@ function isWinner () {
 function timeOut () {
 
 	clearInterval(questionInterval);
+	clearInterval(displayTimer);
 	timedOut++;
 	$("#trivia-question").text("OUT OF TIME!");
 	$("#answer-1").text("CORRECT ANSWER: " + questionObject.correctAnswer);
 	$("#answer-2").text("CORRECT ANSWERS: " + rightAnswer);
 	$("#answer-3").text("WRONG ANSWERS: " + wrongAnswer);
 	$("#answer-4").text("OUT OF TIME: " + timedOut);
-	postQuestionInterval = setInterval(nextQuestion, 5000);
+	$("#time-left").empty();
+	postQuestionInterval = setInterval(nextQuestion, 10000);
 
 }
 
@@ -137,7 +155,7 @@ function timeOut () {
 
 function nextQuestion () {
 
-		question++;
+	question++;
 
 		// If there are no more questions, finishes the game and gives the final score
 
@@ -145,11 +163,15 @@ function nextQuestion () {
 
 			$("#trivia-question").text("Total Score: " + rightAnswer + "/" + triviaQuestions.length + " Correct");
 			$(".answer-choice").empty();
+			$("#time-left").empty();
+			clearInterval(displayTimer);
 
 		} else {
 
 			displayQuestion(triviaQuestions[question]);
 			clearInterval(postQuestionInterval);
+			time = 15;
+			displayTimer = setInterval(decrement, 1000);
 
 		};
 
