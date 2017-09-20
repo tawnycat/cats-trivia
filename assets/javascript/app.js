@@ -89,7 +89,7 @@ $(document).ready(function() {
 
 		$("#trivia-question").off("click");
 
-		displayQuestion(triviaQuestions[question])
+		displayQuestion(triviaQuestions[question]);
 		rightAnswer = 0;
 		wrongAnswer = 0;
 		timedOut = 0;
@@ -97,19 +97,13 @@ $(document).ready(function() {
 	});
 })
 
-function decrement() {
-
-	time--;
-
-	$("#time-left").text(time + " seconds remaining");
-
-}
 
 function displayQuestion (object) {
 
 	// Displays timer for the user
 
 	clearInterval(displayTimer);
+	clearInterval(questionInterval);
 
 	time = 15;
 	displayTimer = setInterval(decrement, 1000);
@@ -122,15 +116,21 @@ function displayQuestion (object) {
 	$("#time-left").text(time + " seconds remaining")
 
 	questionObject = object;
-
-
-
+ 
 	// Timer that moves the game forward
 
 	questionInterval = setInterval(timeOut, 15000);
 
 	$(".answer-choice").click(isWinner);
 
+
+}
+
+function decrement() {
+
+	time--;
+
+	$("#time-left").text(time + " seconds remaining");
 
 }
 
@@ -149,7 +149,7 @@ function isWinner () {
 		$("#trivia-question").text("CORRECT!");
 		$("#answer-1").text("CORRECT ANSWERS: " + rightAnswer);
 		$("#answer-2").text("WRONG ANSWERS: " + wrongAnswer);
-		$("#answer-3").text("OUT OF TIME: " + timedOut);
+		$("#answer-3").text("UNANSWERED QUESTIONS: " + timedOut);
 		$("#answer-4").empty();
 	} else {
 
@@ -160,10 +160,10 @@ function isWinner () {
 		$("#answer-1").text("CORRECT ANSWER: " + questionObject.correctAnswer);
 		$("#answer-2").text("CORRECT ANSWERS: " + rightAnswer);
 		$("#answer-3").text("WRONG ANSWERS: " + wrongAnswer);
-		$("#answer-4").text("OUT OF TIME: " + timedOut);
+		$("#answer-4").text("UNANSWERED QUESTIONS: " + timedOut);
 	}
 
-	postQuestionInterval = setInterval(nextQuestion, 5000);
+	postQuestionTimeout = setTimeout(nextQuestion, 5000);
 
 }
 
@@ -174,13 +174,16 @@ function timeOut () {
 	clearInterval(questionInterval);
 	clearInterval(displayTimer);
 	timedOut++;
+
+	$(".answer-choice").off("click");
+
 	$("#trivia-question").text("OUT OF TIME!");
 	$("#answer-1").text("CORRECT ANSWER: " + questionObject.correctAnswer);
 	$("#answer-2").text("CORRECT ANSWERS: " + rightAnswer);
 	$("#answer-3").text("WRONG ANSWERS: " + wrongAnswer);
-	$("#answer-4").text("OUT OF TIME: " + timedOut);
+	$("#answer-4").text("UNANSWERED QUESTIONS: " + timedOut);
 	$("#time-left").empty();
-	postQuestionInterval = setInterval(nextQuestion, 5000);
+	postQuestionTimeout = setTimeout(nextQuestion, 5000);
 
 }
 
@@ -216,20 +219,21 @@ function nextQuestion () {
 
 			$("#answer-1").text("CORRECT ANSWERS: " + rightAnswer);
 			$("#answer-2").text("WRONG ANSWERS: " + wrongAnswer);
-			$("#answer-3").text();
+			$("#answer-3").text("UNANSWERED QUESTIONS: " + timedOut);
 			$("#answer-4").text("Play again?");
 			$("#time-left").empty();
 			clearInterval(displayTimer);
 			clearInterval(questionInterval);
-			clearInterval(postQuestionInterval);
 
-			question = 0;
-
-			// Lets the user start the quic again
+			// Lets the user start the quiz again
 
 			$("#answer-4").click(function() { 
 
-				displayQuestion(triviaQuestions[question])
+				question = 0;
+
+				$("#answer-4").off("click");
+
+				displayQuestion(triviaQuestions[question]);
 				rightAnswer = 0;
 				wrongAnswer = 0;
 				timedOut = 0;
@@ -241,7 +245,6 @@ function nextQuestion () {
 
 			time = 15;
 			displayQuestion(triviaQuestions[question]);
-			clearInterval(postQuestionInterval);
 
 
 		};
