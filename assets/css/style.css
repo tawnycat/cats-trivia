@@ -1,0 +1,18 @@
+body {
+	background-image: url("../images/background.jpg");
+	font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+	font-family: 'Bungee Shade', cursive;
+	font-size: 60px;
+}
+
+#trivia-box {
+	background-color: white;
+	font-size: 20px;
+}
+
+#trivia-question {
+	font-size: 24px;
+}
