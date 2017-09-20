@@ -48,6 +48,22 @@ var triviaQuestions = [
 	answerC: "A cropped tail",
 	answerD: "Extra toes",
 	correctAnswer: "Extra toes"
+},
+{
+	question: "What country was the first to send a cat into space?",
+	answerA: "USA",
+	answerB: "France",
+	answerC: "China",
+	answerD: "Russia",
+	correctAnswer: "France"
+},
+{
+	question: "If a male cat is called a tom, what is a female cat called?",
+	answerA: "Molly",
+	answerB: "Holly",
+	answerC: "Sally",
+	answerD: "Sue",
+	correctAnswer: "Molly"
 }
 ];
 
@@ -66,13 +82,19 @@ var displayTimer;
 // Display question with answers
 
 $(document).ready(function() {
+
+	$("#trivia-question").text("Start!");
 	
-	displayQuestion(triviaQuestions[question]);
+	$("#trivia-question").click(function() { 
 
-	// Set timer and display it
+		$("#trivia-question").off("click");
 
-	displayTimer = setInterval(decrement, 1000);
+		displayQuestion(triviaQuestions[question])
+		rightAnswer = 0;
+		wrongAnswer = 0;
+		timedOut = 0;
 
+	});
 })
 
 function decrement() {
@@ -85,6 +107,13 @@ function decrement() {
 
 function displayQuestion (object) {
 
+	// Displays timer for the user
+
+	clearInterval(displayTimer);
+
+	time = 15;
+	displayTimer = setInterval(decrement, 1000);
+
 	$("#trivia-question").text(object.question);
 	$("#answer-1").text(object.answerA);
 	$("#answer-2").text(object.answerB);
@@ -93,6 +122,10 @@ function displayQuestion (object) {
 	$("#time-left").text(time + " seconds remaining")
 
 	questionObject = object;
+
+
+
+	// Timer that moves the game forward
 
 	questionInterval = setInterval(timeOut, 15000);
 
@@ -130,7 +163,7 @@ function isWinner () {
 		$("#answer-4").text("OUT OF TIME: " + timedOut);
 	}
 
-	postQuestionInterval = setInterval(nextQuestion, 10000);
+	postQuestionInterval = setInterval(nextQuestion, 5000);
 
 }
 
@@ -147,7 +180,7 @@ function timeOut () {
 	$("#answer-3").text("WRONG ANSWERS: " + wrongAnswer);
 	$("#answer-4").text("OUT OF TIME: " + timedOut);
 	$("#time-left").empty();
-	postQuestionInterval = setInterval(nextQuestion, 10000);
+	postQuestionInterval = setInterval(nextQuestion, 5000);
 
 }
 
@@ -161,17 +194,55 @@ function nextQuestion () {
 
 		if (question >= triviaQuestions.length) {
 
-			$("#trivia-question").text("Total Score: " + rightAnswer + "/" + triviaQuestions.length + " Correct");
-			$(".answer-choice").empty();
+			// Give different statements depending on how well the user did
+
+			if (rightAnswer >= 6) {
+
+				$("#trivia-question").text("Fantastic!");
+
+			} else if (rightAnswer >= 4) {
+
+				$("#trivia-question").text("Okay!");
+
+			} else if (rightAnswer >= 2) {
+
+				$("#trivia-question").text("Better luck next time!");
+
+			} else {
+
+				$("#trivia-question").text("Not so great...");
+
+			}
+
+			$("#answer-1").text("CORRECT ANSWERS: " + rightAnswer);
+			$("#answer-2").text("WRONG ANSWERS: " + wrongAnswer);
+			$("#answer-3").text();
+			$("#answer-4").text("Play again?");
 			$("#time-left").empty();
 			clearInterval(displayTimer);
+			clearInterval(questionInterval);
+			clearInterval(postQuestionInterval);
+
+			question = 0;
+
+			// Lets the user start the quic again
+
+			$("#answer-4").click(function() { 
+
+				displayQuestion(triviaQuestions[question])
+				rightAnswer = 0;
+				wrongAnswer = 0;
+				timedOut = 0;
+
+			});
+
 
 		} else {
 
+			time = 15;
 			displayQuestion(triviaQuestions[question]);
 			clearInterval(postQuestionInterval);
-			time = 15;
-			displayTimer = setInterval(decrement, 1000);
+
 
 		};
 
